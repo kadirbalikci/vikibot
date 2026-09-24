@@ -1,0 +1,10 @@
+user-password.py
+*.lwp
+throttle.ctrl
+logs/
+apicache*/
+duzenleme_kaydi.tsv
+__pycache__/
+.DS_Store
+.pytest_cache/
+*.pyc

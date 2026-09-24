@@ -1,0 +1,15 @@
+# Bul-değiştir kuralları — sütunlar TAB ile ayrılır:
+# bul	değiştir	tip	not
+#
+# tip:
+#   kelime  (varsayılan) Tam kelime. Baş harfi büyük olanı da düzeltir (Herkez → Herkes).
+#   kok     Kelime başı eşleşir, sonuna ek gelebilir (herkezin → herkesin). Dikkatli kullanın.
+#   metin   Düz metin, kelime sınırı yok.
+#   regex   Python düzenli ifadesi; değiştir kısmında \1, \2 kullanılabilir.
+#
+# İpucu: Önce birkaç kural ekleyip deneme modunda çalıştırın, farkları inceleyin.
+herkez	herkes	kok
+yanlız	yalnız	kok
+yalnış	yanlış	kok
+birşey	bir şey	kok
+herbir	her bir	kelime
