@@ -124,6 +124,14 @@ Farklar doğruysa canlı modda çalıştır:
 python3 bul_degistir.py -kurallar:yeni_kurallar.tsv -canli -enfazla:5
 ```
 
+Deneme modunda gördüğün aynı sayfalar üzerinde canlı çalışmak için `-limit` değerini aynı tut. `-enfazla` sadece kaydedilen düzenlemeleri sayar, `n` dediklerin sayılmaz. Bu yüzden reddedeceklerin varsa sınırı biraz yüksek tut:
+
+```bash
+python3 bul_degistir.py -kurallar:yeni_kurallar.tsv -limit:5 -canli -enfazla:10
+```
+
+Fark ekranında şunlara `n` de: eser adları (şarkı, film, kitap, dergi cildi), kaynakça ve bibliyografya satırları, alıntılanmış eski metinler. İtalik yazılmış eser adlarını bot zaten atlıyor. Diskografi listelerindeki gibi italik olmayanlar yine önüne gelebilir.
+
 Canlı modda küçük partilerle ilerle (`-enfazla:5` ile `-enfazla:20` arası). Yüksek hızlı toplu düzenleme, onaylı olsa bile bot gibi değerlendirilebilir.
 
 ### Seçenekler
@@ -153,6 +161,26 @@ Her çalışma `duzenleme_kaydi.tsv` dosyasına yazılır. Bu dosya git'e gönde
 
 ```bash
 git add -A && git commit -m "açıklama" && git push
+```
+
+Claude değişiklikleri commit'lediyse sadece şunu çalıştırman yeterli:
+
+```bash
+git push
+```
+
+İlk kez push ediyorsan:
+
+```bash
+git push -u origin main
+```
+
+Şifre sorulursa GitHub hesap şifren çalışmaz. Kullanıcı adı `kadirbalikci`, şifre olarak `repo` yetkili bir personal access token gir (GitHub → Settings → Developer settings → Personal access tokens).
+
+"dubious ownership" hatası alırsan şunu bir kez çalıştırıp push'u tekrarla:
+
+```bash
+git config --global --add safe.directory '*'
 ```
 
 `user-password.py` (şifre), `*.lwp` (oturum çerezi), `logs/`, `apicache/` ve `duzenleme_kaydi.tsv` `.gitignore` ile dışarıda tutulur.
