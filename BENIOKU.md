@@ -19,8 +19,13 @@ Düzenlemeler `KadirBalikci` hesabıyla, her biri onaylanarak yapılır. Bot pol
 | `madde güncelle` | `{{Güncelle}}` etiketli ya da eski tarihli bir bilgiyi güncel kaynakla düzeltir |
 | `madde güncelle: Ankara` | Sadece belirtilen maddeye bakar |
 | `madde güncelle: futbol` | Adayı belirtilen alandan seçer |
+| `yazım tara` | TDK'ya göre kesin yanlış olan yaygın yazımları arar. Her birinin kaç maddede geçtiğini ve yanlış eşleşme riskini gösterir. |
+| `yazım tara: 10` | Aynısını 10 adayla yapar |
+| `yazım kuralı ekle: herkez → herkes` | Verdiğin kuralı TDK'dan ve örnek maddelerden doğrular, `duzeltmeler.tsv` dosyasına ekleyip commit'ler, çalıştırman gereken bot komutlarını verir |
 
-`madde genişlet` komutunun becerisi `skills/vikipedi-genislet/SKILL.md` dosyasında. `madde güncelle` komutunun çalışması için Claude'daki "vikipedi-guncelle" beceri önerisinin kaydedilmiş olması gerekir.
+`madde genişlet` komutunun becerisi `skills/vikipedi-genislet/SKILL.md` dosyasında. `madde güncelle` ve `yazım ...` komutlarının çalışması için Claude'daki "vikipedi-guncelle" ve "vikipedi-yazim" beceri önerilerinin kaydedilmiş olması gerekir.
+
+**Yazım düzeltmelerinde iş bölümü:** Claude kuralı bulur, doğrular ve dosyaya ekler. Botu sen kendi Terminal'inde çalıştırırsın. Önce deneme modunda farklara bakarsın, sonra canlı modda her düzenlemeyi `y`/`n` ile onaylarsın. Komutlar aşağıda.
 
 **Her öneride Claude'dan gelenler:**
 
@@ -104,6 +109,22 @@ Her sayfada fark gösterilir ve senden onay beklenir:
 - `n` atlar
 - `q` çıkar
 - `a` kalan hepsini onaylar. Kendi hesabınla bunu kullanma.
+
+### Sadece yeni eklenen kuralları denemek
+
+Claude yeni kuralları `yeni_kurallar.tsv` dosyasına da yazdıysa, sadece onları çalıştırmak için önce deneme modunda farklara bak:
+
+```bash
+python3 bul_degistir.py -kurallar:yeni_kurallar.tsv -limit:5
+```
+
+Farklar doğruysa canlı modda çalıştır:
+
+```bash
+python3 bul_degistir.py -kurallar:yeni_kurallar.tsv -canli -enfazla:5
+```
+
+Canlı modda küçük partilerle ilerle (`-enfazla:5` ile `-enfazla:20` arası). Yüksek hızlı toplu düzenleme, onaylı olsa bile bot gibi değerlendirilebilir.
 
 ### Seçenekler
 
