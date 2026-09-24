@@ -43,6 +43,11 @@ VARSAYILAN_ISTISNALAR: list[str] = [
     'startspace',     # boşlukla başlayan satırlar (ön biçimli)
 ]
 
+# İtalik ve kalın metin: eser adları (''Film adı''), madde öznesi ('''Ad''').
+# Eser adları özgün yazımıyla kalmalı. -italikler seçeneğiyle kapatılabilir.
+ITALIK_ISTISNA = re.compile(r"''[^\n]*?''")
+VARSAYILAN_ISTISNALAR.append(ITALIK_ISTISNA)
+
 # Site gerektirmeyen ek regex istisnaları (Türkçe ad alanları dahil)
 EK_ISTISNALAR = [
     # [[Dosya:...]] / [[Kategori:...]] (içinde iç içe bağlantı olabilir)

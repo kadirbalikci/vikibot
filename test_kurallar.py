@@ -52,6 +52,15 @@ def test_korunan_bolgeler():
         assert u(parca, k) == parca, parca
 
 
+def test_italik_ve_kalin_korunur():
+    k = Kural('süpriz', 'sürpriz', 'kok')
+    assert u("|''Süpriz Ortak''", k) == "|''Süpriz Ortak''"
+    assert u("'''Süpriz''' bir filmdir, süprizler", k) == "'''Süpriz''' bir filmdir, sürprizler"
+    assert u("''A'' ile süpriz ve ''B''", k) == "''A'' ile sürpriz ve ''B''"
+    # Türkçe kesme işareti italik sayılmaz
+    assert u("Stetson'ın süprizi, Ali'nin", k) == "Stetson'ın sürprizi, Ali'nin"
+
+
 def test_karisik_metin():
     k = Kural('herkez', 'herkes')
     metin = "Herkez bilir.<ref>herkez</ref> [[Ankara]]'da herkez «herkez» der."

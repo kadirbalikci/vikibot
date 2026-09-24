@@ -138,6 +138,7 @@ Canlı modda küçük partilerle ilerle (`-enfazla:5` ile `-enfazla:20` arası).
 | `-kurallar:dosya.tsv` | Başka bir kurallar dosyası kullan |
 | `-sablonlar` | Şablon içlerinde de değiştir (dikkatli kullan) |
 | `-baglantilar` | Bağlantı içlerinde de değiştir; bağlantı hedefini de değiştirir (dikkatli kullan) |
+| `-italikler` | `''italik''` ve `'''kalın'''` metin içinde de değiştir. Eser adlarını da değiştirir, dikkatli kullan. |
 | `-otomatik` | Onay sormadan kaydet. Sadece bot yetkisi olan hesapta çalışır, bu hesapta kullanılmaz. |
 
 Diğer Pywikibot sayfa seçenekleri (`-search:`, `-file:`, `-ns:` vb.) de çalışır.
@@ -177,7 +178,7 @@ Bağlama göre değişen hatalar (ör. -de/-da ayrımı) bul-değiştirle güven
 
 ### Bot neye dokunmaz
 
-- Metin bölgeleri: kaynaklar (`<ref>`), şablonlar, bağlantılar (`[[...]]`), dosya ve kategori adları, URL'ler, alıntılar («», ""), yorumlar, `<nowiki>`, `<blockquote>`, `<poem>`, `<math>` vb.
+- Metin bölgeleri: italik ve kalın metin (`''eser adı''`, `'''madde öznesi'''`), kaynaklar (`<ref>`), şablonlar, bağlantılar (`[[...]]`), dosya ve kategori adları, URL'ler, alıntılar («», ""), yorumlar, `<nowiki>`, `<blockquote>`, `<poem>`, `<math>` vb.
 - Sayfalar: yönlendirmeler, madde dışı ad alanları, korumalı sayfalar ve `{{nobots}}` içeren sayfalar.
 
 ---

@@ -25,6 +25,7 @@ Seçenekler
   -otomatik         Her düzenleme için onay sorma (-canli ile birlikte)
   -sablonlar        Şablon ({{...}}) içlerinde de değiştir
   -baglantilar      [[bağlantı|etiket]] içlerinde de değiştir (dikkat!)
+  -italikler        ''italik'' ve '''kalın''' metin içinde de değiştir (dikkat: eser adları)
   -enfazla:N        En fazla N düzenleme yap, sonra dur
   -limit:N          En fazla N sayfa tara (Pywikibot sayfa üreteci seçeneği)
   + Pywikibot sayfa üreteci seçenekleri: -page:, -cat:, -file:, -search:,
@@ -40,7 +41,7 @@ import pywikibot
 from pywikibot import config, pagegenerators
 from pywikibot.bot import ExistingPageBot, SingleSiteBot
 
-from kurallar import VARSAYILAN_ISTISNALAR, kurallari_yukle, uygula
+from kurallar import ITALIK_ISTISNA, VARSAYILAN_ISTISNALAR, kurallari_yukle, uygula
 
 KOK = Path(__file__).resolve().parent
 DURDURMA_KONTROL_ARALIGI = 10  # her N sayfada bir durdurma sayfasına bak
@@ -164,7 +165,7 @@ def main(*args: str) -> None:
     secenekler = {
         'kurallar_dosyasi': str(KOK / 'duzeltmeler.tsv'),
         'canli': False, 'otomatik': False,
-        'sablonlar': False, 'baglantilar': False, 'enfazla': 0,
+        'sablonlar': False, 'baglantilar': False, 'italikler': False, 'enfazla': 0,
     }
     yerel_argumanlar = pywikibot.handle_args(args)
     site = pywikibot.Site('tr', 'wikipedia')
@@ -178,7 +179,7 @@ def main(*args: str) -> None:
             secenekler['kurallar_dosyasi'] = deger
         elif ad == 'enfazla':
             secenekler['enfazla'] = int(deger)
-        elif ad in ('canli', 'otomatik', 'sablonlar', 'baglantilar'):
+        elif ad in ('canli', 'otomatik', 'sablonlar', 'baglantilar', 'italikler'):
             secenekler[ad] = True
         else:
             pywikibot.error(f'Bilinmeyen seçenek: {arg}')
@@ -195,6 +196,8 @@ def main(*args: str) -> None:
         istisnalar.remove('template')
     if secenekler['baglantilar']:
         istisnalar.remove('link')
+    if secenekler['italikler']:
+        istisnalar.remove(ITALIK_ISTISNA)
 
     # Güvenlik: -canli verilmedikçe hiçbir şey kaydedilmez
     if not secenekler['canli']:
