@@ -23,7 +23,7 @@ Düzenlemeler `KadirBalikci` hesabıyla, her biri onaylanarak yapılır. Bot pol
 | `yazım tara: 10` | Aynısını 10 adayla yapar |
 | `yazım kuralı ekle: herkez → herkes` | Verdiğin kuralı TDK'dan ve örnek maddelerden doğrular, `duzeltmeler.tsv` dosyasına ekleyip commit'ler, çalıştırman gereken bot komutlarını verir |
 
-`madde genişlet` komutunun becerisi `skills/vikipedi-genislet/SKILL.md` dosyasında. `yazım ...` komutlarının becerisi `skills/vikipedi-yazim/SKILL.md` dosyasında. `madde güncelle` komutunun çalışması için Claude'daki "vikipedi-guncelle" beceri önerisinin kaydedilmiş olması gerekir.
+`madde genişlet` komutunun becerisi `skills/vikipedi-genislet/SKILL.md` dosyasında. `yazım ...` komutlarının becerisi `skills/vikipedi-yazim/SKILL.md` dosyasında. `madde güncelle` komutunun becerisi `skills/vikipedi-guncelle/SKILL.md` dosyasında.
 
 **Yazım düzeltmelerinde iş bölümü:** Claude kuralı bulur, doğrular ve dosyaya ekler. Botu sen kendi Terminal'inde çalıştırırsın. Önce deneme modunda farklara bakarsın, sonra canlı modda her düzenlemeyi `y`/`n` ile onaylarsın. Komutlar aşağıda.
 
@@ -193,6 +193,8 @@ Bağlama göre değişen hatalar (ör. -de/-da ayrımı) bul-değiştirle güven
 | `user-config.py` | Pywikibot ayarları: hesap adı, kaydetmeler arası 10 sn bekleme |
 | `user-password.py.ornek` | Bot şifresi şablonu. Gerçek dosya `user-password.py`, git'e girmez. |
 | `skills/vikipedi-genislet/SKILL.md` | Claude'un madde genişletme becerisi |
+| `skills/vikipedi-guncelle/SKILL.md` | Claude'un madde güncelleme becerisi |
+| `skills/vikipedi-yazim/SKILL.md` | Claude'un yazım kuralı bulma/ekleme becerisi |
 
 Bot şifresini yenilemek için `Özel:BotŞifreleri` sayfasından yeni şifre oluştur ve `user-password.py` dosyasına yaz:
 
