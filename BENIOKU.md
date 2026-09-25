@@ -19,11 +19,13 @@ Düzenlemeler `KadirBalikci` hesabıyla, her biri onaylanarak yapılır. Bot pol
 | `madde güncelle` | `{{Güncelle}}` etiketli ya da eski tarihli bir bilgiyi güncel kaynakla düzeltir |
 | `madde güncelle: Ankara` | Sadece belirtilen maddeye bakar |
 | `madde güncelle: futbol` | Adayı belirtilen alandan seçer |
+| `din maddesi düzelt` | İslam konulu maddelerde yanlış/absürt bilgiyi ve eksik genel kabul bilgisini bulur, TDV ve akademik kaynaklarla düzeltme/ekleme hazırlar. Kaynaklı farklı görüşlere dokunmaz. |
+| `din maddesi düzelt: Miraç` | Sadece belirtilen maddeye bakar |
 | `yazım tara` | TDK'ya göre kesin yanlış olan yaygın yazımları arar. Her birinin kaç maddede geçtiğini ve yanlış eşleşme riskini gösterir. |
 | `yazım tara: 10` | Aynısını 10 adayla yapar |
 | `yazım kuralı ekle: herkez → herkes` | Verdiğin kuralı TDK'dan ve örnek maddelerden doğrular, `duzeltmeler.tsv` dosyasına ekleyip commit'ler, çalıştırman gereken bot komutlarını verir |
 
-`madde genişlet` komutunun becerisi `skills/vikipedi-genislet/SKILL.md` dosyasında. `yazım ...` komutlarının becerisi `skills/vikipedi-yazim/SKILL.md` dosyasında. `madde güncelle` komutunun becerisi `skills/vikipedi-guncelle/SKILL.md` dosyasında.
+`madde genişlet` komutunun becerisi `skills/vikipedi-genislet/SKILL.md` dosyasında. `yazım ...` komutlarının becerisi `skills/vikipedi-yazim/SKILL.md` dosyasında. `madde güncelle` komutunun becerisi `skills/vikipedi-guncelle/SKILL.md` dosyasında. `din maddesi düzelt` komutunun becerisi `skills/vikipedi-din-duzelt/SKILL.md` dosyasında.
 
 **Yazım düzeltmelerinde iş bölümü:** Claude kuralı bulur, doğrular ve dosyaya ekler. Botu sen kendi Terminal'inde çalıştırırsın. Önce deneme modunda farklara bakarsın, sonra canlı modda her düzenlemeyi `y`/`n` ile onaylarsın. Komutlar aşağıda.
 
@@ -224,6 +226,7 @@ Bağlama göre değişen hatalar (ör. -de/-da ayrımı) bul-değiştirle güven
 | `skills/vikipedi-genislet/SKILL.md` | Claude'un madde genişletme becerisi |
 | `skills/vikipedi-guncelle/SKILL.md` | Claude'un madde güncelleme becerisi |
 | `skills/vikipedi-yazim/SKILL.md` | Claude'un yazım kuralı bulma/ekleme becerisi |
+| `skills/vikipedi-din-duzelt/SKILL.md` | Claude'un dini madde düzeltme becerisi |
 
 Bot şifresini yenilemek için `Özel:BotŞifreleri` sayfasından yeni şifre oluştur ve `user-password.py` dosyasına yaz:
 
