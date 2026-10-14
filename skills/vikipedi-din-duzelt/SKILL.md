@@ -49,6 +49,17 @@ Tercih sırası:
 - İç bağlantılar `[[...]]` yalnızca var olan Türkçe maddelere (API ile kontrol et) ve ilk geçtiği yerde.
 - Kaynak biçimi: `<ref>{{Web kaynağı |url= |başlık= |erişimtarihi= |yayıncı= |tarih= |yazar= |dil=tr}}</ref>`; TDV için yazar, cilt, sayfa varsa `{{Ansiklopedi kaynağı}}` veya `{{Kitap kaynağı}}`. Aynı kaynak tekrarı için `<ref name="...">`.
 
+### Doğal üslup (her metinde uygula)
+Amaç, metnin deneyimli bir Vikipedi editörünün elinden çıkmış gibi akıcı ve doğal okunmasıdır. YZ desteği değişiklik özetinde her zaman belirtilir; bu kurallar okunabilirlik içindir, tespit araçlarını atlatmak için değildir (kasıtlı yazım hatası, yapay çeşitlilik gibi hileler yapılmaz).
+- **Kip:** Tarihî anlatımda yalın geçmiş zaman (`inşa edildi`, `satın aldı`). `-mıştır/-mektedir` yığınından kaçın; bir paragrafta en fazla bir iki kez.
+- **Cümle ritmi:** Kısa ve orta cümleleri karıştır. Her cümle aynı kalıpla (özne + ... + fiil) başlamasın; ara sıra zarf, tarih veya yer tümleciyle başla ("1544'te kale...").
+- **Bağlaç tekrarı yok:** Cümleleri "Ayrıca", "Bunun yanı sıra", "Öte yandan", "Bununla birlikte" ile başlatma; bağlantıyı cümlenin kendisi kursun.
+- **Çeviri kokusu:** İngilizce söz dizimini taşıma. Edilgen yığını (`... tarafından ... edilmektedir`), gereksiz `olarak`, `sahip olmak` kalıbı (`altıgen bir plana sahiptir` yerine `planı altıgendir`), `bir` fazlalığı, `-ki` ile uzayan cümleler. Kaynak İngilizceyse önce anlamı kavra, sonra Türkçe düşünerek yeniden yaz; kelime kelime çevirme.
+- **Somutluk:** Soyut övgü ve genelleme yerine kaynaktaki somut ayrıntı (tarih, sayı, ad, yer). Kaynakta olmayan yorum, bağlam cümlesi veya kapanış cümlesi ekleme.
+- **Dolgu listesi (kullanma):** "önemli bir yere sahiptir", "dikkat çekmektedir", "büyük önem taşır", "zengin bir geçmişe sahip", "çok yönlü", "kilit rol oynadı", "ayrıca belirtmek gerekir ki", "günümüzde de ... devam etmektedir", "sonuç olarak", üçlü sıfat/isim dizileri, her maddeyi ikiye ayıran simetrik cümleler.
+- **Maddeye uyum:** Eklenen metin mevcut maddenin kipine, terim tercihine (ör. "Muhammed", "Kâbe"), yazım biçimine ve paragraf uzunluğuna uysun; ayrı bir elden çıkmış gibi durmasın.
+- **Son okuma:** Metni teslim etmeden önce bir kez baştan oku: yukarıdaki listedeki kalıpları tara, aynı kelimeyle başlayan ardışık cümleleri düzelt, sesli okununca takılan yeri sadeleştir.
+
 ## 5. Kadir'e çıktı biçimi
 Her madde için:
 1. **Madde:** bağlantısı, son düzenleme tarihi.
