@@ -68,6 +68,46 @@ def test_karisik_metin():
     assert u(metin, k) == beklenen
 
 
+def test_ozel_isimlere_dokunulmaz():
+    k = Kural('entellektüel', 'entelektüel', 'kok')
+    # Cümle ortasında büyük harf: dergi, kurum, yer adı olabilir
+    assert u('Yazıları Entellektüel dergisinde çıktı.', k) == \
+        'Yazıları Entellektüel dergisinde çıktı.'
+    assert u("Bir süre Entellektüel'in editörlüğünü yaptı.", k) == \
+        "Bir süre Entellektüel'in editörlüğünü yaptı."
+    # Liste, tablo ve başlık başları da ad sayılır
+    for parca in ('* Entellektüel, 1985', '| Entellektüel', '== Entellektüel ==',
+                  '# Entellektüel Yayınları'):
+        assert u(parca, k) == parca, parca
+    # Ad sayfanın başka bir yerinde (italik, kaynak, cümle ortası) geçiyorsa
+    # cümle başındaki büyük harfli kullanım da ad sayılır; küçük harfli düzeltilir
+    assert u("Entellektüel 1985'te çıktı. ''Entellektüel'' aylıktı, "
+             "entellektüel çevrelerde okundu.", k) == \
+        ("Entellektüel 1985'te çıktı. ''Entellektüel'' aylıktı, "
+         "entelektüel çevrelerde okundu.")
+    assert u('Entellektüel aylıktı.<ref>Entellektüel, sayı 3</ref>', k) == \
+        'Entellektüel aylıktı.<ref>Entellektüel, sayı 3</ref>'
+
+
+def test_cumle_basinda_buyuk_harf_duzeltilir():
+    k = Kural('herkez', 'herkes')
+    assert u('Dün geldi. Herkez gitti.', k) == 'Dün geldi. Herkes gitti.'
+    assert u('Ne oldu? Herkez şaşırdı!', k) == 'Ne oldu? Herkes şaşırdı!'
+    assert u('Önceki paragraf.\n\nHerkez bilir.', k) == 'Önceki paragraf.\n\nHerkes bilir.'
+    assert u('Bilinir.<ref>x</ref> Herkez gitti.', k) == 'Bilinir.<ref>x</ref> Herkes gitti.'
+    assert u('Bilinir.{{kaynak belirt}} Herkez gitti.', k) == \
+        'Bilinir.{{kaynak belirt}} Herkes gitti.'
+    assert u('"Gel" dedi. Herkez geldi.', k) == '"Gel" dedi. Herkes geldi.'
+
+
+def test_sayac_ozel_isimleri_saymaz():
+    # 'Herkez Sokağı' ad: cümle başındaki 'Herkez' de korunur, yalnız küçük harfli sayılır
+    yeni, uyg = uygula('Dün Herkez Sokağı. Herkez geldi, herkez gitti.',
+                       [Kural('herkez', 'herkes')])
+    assert yeni == 'Dün Herkez Sokağı. Herkez geldi, herkes gitti.'
+    assert uyg[0][1] == 1
+
+
 def test_sayac():
     _, uyg = uygula('herkez herkez', [Kural('herkez', 'herkes')])
     assert uyg[0][1] == 2

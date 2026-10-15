@@ -66,7 +66,7 @@ cd ~/PycharmProjects/vikibot
 
 ```bash
 pip3 install pywikibot pytest
-python3 -m pytest -q test_kurallar.py
+python3 -m pytest -q test_kurallar.py test_gecmis.py
 ```
 
 Testlerin hepsi geçmeli.
@@ -126,10 +126,10 @@ Farklar doğruysa canlı modda çalıştır:
 python3 bul_degistir.py -kurallar:yeni_kurallar.tsv -canli -enfazla:5
 ```
 
-Deneme modunda gördüğün aynı sayfalar üzerinde canlı çalışmak için `-limit` değerini aynı tut. `-enfazla` sadece kaydedilen düzenlemeleri sayar, `n` dediklerin sayılmaz. Bu yüzden reddedeceklerin varsa sınırı biraz yüksek tut:
+Arama sonuçları her çalışmada rastgele geldiği için deneme modunda gördüğün sayfalar canlı çalışmada tekrar gelmez. Deneme modunda değişiklik bulunan sayfaları canlı modda işlemek için `-denemeler` kullan. `-enfazla` sadece kaydedilen düzenlemeleri sayar, `n` dediklerin sayılmaz. Bu yüzden reddedeceklerin varsa sınırı biraz yüksek tut:
 
 ```bash
-python3 bul_degistir.py -kurallar:yeni_kurallar.tsv -limit:5 -canli -enfazla:10
+python3 bul_degistir.py -kurallar:yeni_kurallar.tsv -denemeler -canli -enfazla:10
 ```
 
 Fark ekranında şunlara `n` de: eser adları (şarkı, film, kitap, dergi cildi), kaynakça ve bibliyografya satırları, alıntılanmış eski metinler. İtalik yazılmış eser adlarını bot zaten atlıyor. Diskografi listelerindeki gibi italik olmayanlar yine önüne gelebilir.
@@ -142,7 +142,9 @@ Canlı modda küçük partilerle ilerle (`-enfazla:5` ile `-enfazla:20` arası).
 |---|---|
 | `-canli` | Değişiklikleri gerçekten kaydet |
 | `-enfazla:N` | En fazla N düzenleme yap, sonra dur |
-| `-limit:N` | En fazla N sayfa tara |
+| `-limit:N` | Kural başına en fazla N yeni (geçmişte olmayan) sayfa tara |
+| `-tekrar:GUN` | Taranmış bir sayfaya en erken kaç gün sonra tekrar bakılsın (varsayılan 180, `0` = bekleme yok). Sadece `-page:`/`-cat:` verilmediğinde geçerli. |
+| `-denemeler` | Arama yapmadan, deneme modunda değişiklik bulunan sayfaları işle |
 | `-page:"Başlık"` | Tek sayfa |
 | `-cat:"Kategori adı"` | Kategorideki sayfalar |
 | `-kurallar:dosya.tsv` | Başka bir kurallar dosyası kullan |
@@ -154,6 +156,16 @@ Canlı modda küçük partilerle ilerle (`-enfazla:5` ile `-enfazla:20` arası).
 Diğer Pywikibot sayfa seçenekleri (`-search:`, `-file:`, `-ns:` vb.) de çalışır.
 
 Her çalışma `duzenleme_kaydi.tsv` dosyasına yazılır. Bu dosya git'e gönderilmez.
+
+### Tarama geçmişi ve geri almalar
+
+Bot taradığı her sayfayı `tarama_gecmisi.tsv` dosyasına yazar (zaman, sayfa, sonuç, not). Sonuçlar: `temiz` (aramada çıktı ama düzeltilecek yer yoktu), `düzenlendi`, `deneme`, `geri_alındı`, `atlandı`. Bu dosya da git'e gönderilmez.
+
+- **Geri alınan düzenlemeler tekrarlanmaz.** Bu hesabın bir düzenlemesi geri alınmış sayfaya bot bir daha dokunmaz. Kontrol sayfa geçmişinden (`mw-reverted` etiketi) yapılır ve `-page:` ile verilen sayfalarda da geçerlidir.
+- **Geri gelen hata düzeltilmez.** Daha önce düzeltilen bir hata sayfada yeniden görünürse biri geri almış ya da bilerek geri koymuş olabilir. Bot o sayfayı düzenlemez, kalıcı olarak engeller. Aynı sayfada başka bir kuralın düzeltmesi buna takılmaz.
+- **Her çalışmada farklı sayfalar gelir.** Arama sonuçları rastgele sıralanır, kurallar arasında sırayla dönülür. Son 180 gün içinde taranmış sayfalar atlanır.
+
+Bir sayfanın engelini kaldırmak istersen `tarama_gecmisi.tsv` dosyasından o sayfanın `geri_alındı` satırlarını sil. Bunu yalnızca geri alan kişiyle anlaştıysan yap.
 
 ### Acil durdurma
 
@@ -185,7 +197,7 @@ git push -u origin main
 git config --global --add safe.directory '*'
 ```
 
-`user-password.py` (şifre), `*.lwp` (oturum çerezi), `logs/`, `apicache/` ve `duzenleme_kaydi.tsv` `.gitignore` ile dışarıda tutulur.
+`user-password.py` (şifre), `*.lwp` (oturum çerezi), `logs/`, `apicache/`, `duzenleme_kaydi.tsv` ve `tarama_gecmisi.tsv` `.gitignore` ile dışarıda tutulur.
 
 ---
 
@@ -209,6 +221,7 @@ Bağlama göre değişen hatalar (ör. -de/-da ayrımı) bul-değiştirle güven
 ### Bot neye dokunmaz
 
 - Metin bölgeleri: italik ve kalın metin (`''eser adı''`, `'''madde öznesi'''`), kaynaklar (`<ref>`), şablonlar, bağlantılar (`[[...]]`), dosya ve kategori adları, URL'ler, alıntılar («», ""), yorumlar, `<nowiki>`, `<blockquote>`, `<poem>`, `<math>` vb.
+- Özel isimler (`kelime` ve `kok` kuralları): büyük harfle başlayan bir eşleşme yalnızca cümle başındaysa (metin ya da paragraf başı, `.` `!` `?` sonrası) düzeltilir. Cümle ortasında, liste maddesi, tablo hücresi ve başlık başında büyük harfle başlayan eşleşme ad sayılır (ör. "C. 4, Entellektüel Hayat"). Aynı büyük harfli biçim sayfanın herhangi bir yerinde (italik, kaynak, bağlantı dahil) ad olarak geçiyorsa, o sayfada cümle başındakiler de değiştirilmez. Küçük harfli kullanımlar her zamanki gibi düzeltilir.
 - Sayfalar: yönlendirmeler, madde dışı ad alanları, korumalı sayfalar ve `{{nobots}}` içeren sayfalar.
 
 ---
@@ -219,8 +232,9 @@ Bağlama göre değişen hatalar (ör. -de/-da ayrımı) bul-değiştirle güven
 |---|---|
 | `bul_degistir.py` | Bot |
 | `kurallar.py` | Kuralları yükler ve vikimetne güvenli şekilde uygular |
+| `gecmis.py` | Tarama geçmişi: atlanacak sayfalar ve geri alma engeli |
 | `duzeltmeler.tsv` | Düzeltme listesi |
-| `test_kurallar.py` | Çevrimdışı testler |
+| `test_kurallar.py`, `test_gecmis.py` | Çevrimdışı testler |
 | `user-config.py` | Pywikibot ayarları: hesap adı, kaydetmeler arası 10 sn bekleme |
 | `user-password.py.ornek` | Bot şifresi şablonu. Gerçek dosya `user-password.py`, git'e girmez. |
 | `skills/vikipedi-genislet/SKILL.md` | Claude'un madde genişletme becerisi |

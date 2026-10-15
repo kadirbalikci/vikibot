@@ -4,6 +4,7 @@ throttle.ctrl
 logs/
 apicache*/
 duzenleme_kaydi.tsv
+tarama_gecmisi.tsv
 __pycache__/
 .DS_Store
 .pytest_cache/

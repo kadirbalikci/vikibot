@@ -135,6 +135,52 @@ def kurallari_yukle(yol: str | Path) -> list[Kural]:
     return kurallar
 
 
+# ---------------------------------------------------------------------------
+# Özel isimler
+# ---------------------------------------------------------------------------
+
+# Cümle sonunu izleyen kaynak ve şablonlar: "bilir.<ref>...</ref> Herkez"
+_SONDAKI_EK = re.compile(
+    r'(?:<ref[^>/]*/>|<ref[^>]*>.*?</ref>|\{\{[^{}]*\}\}|\s)+$', re.DOTALL)
+# Cümle sonu: . ! ? … ve ardından gelebilecek kapanış tırnağı/parantezi
+_CUMLE_SONU = re.compile(r'[.!?…]["\'»”’)\]]*$')
+
+
+def cumle_basi_mi(metin: str, konum: int) -> bool:
+    """metin[konum]'daki kelime bir cümlenin başında mı?
+
+    Cümle başı: metnin ya da satırın (paragrafın) başı veya . ! ? … sonrası.
+    Liste maddesi (* # : ;), tablo hücresi (| !) ve başlık (=) başları cümle
+    başı sayılmaz; oralarda büyük harfle başlayan kelime çoğunlukla bir addır.
+    """
+    satir_basi = metin.rfind('\n', 0, konum) + 1
+    once = _SONDAKI_EK.sub('', metin[satir_basi:konum])
+    if not once:
+        return True
+    return bool(_CUMLE_SONU.search(once))
+
+
+def _buyuk_harfli(m: re.Match) -> bool:
+    ilk = m.group(0)[:1]
+    return ilk != tr_lower(ilk)
+
+
+def ozel_isim_olabilir(m: re.Match) -> bool:
+    """Büyük harfle başlayan ve cümle başında olmayan eşleşme bir özel isim
+    olabilir (ör. Entellektüel dergisi, Herkez Sokağı)."""
+    return _buyuk_harfli(m) and not cumle_basi_mi(m.string, m.start())
+
+
+def sayfada_ad_olarak_geciyor(metin: str, kural: 'Kural') -> bool:
+    """Kuralın büyük harfli biçimi sayfanın herhangi bir yerinde (korunan
+    bölgeler dahil: italik, kaynak, bağlantı) cümle ortasında geçiyor mu?
+
+    Geçiyorsa o biçim bu sayfada bir addır; cümle başındaki büyük harfli
+    kullanımlar da aynı ad olabileceği için hiçbirine dokunulmaz.
+    """
+    return any(ozel_isim_olabilir(m) for m in kural.desen.finditer(metin))
+
+
 def uygula(metin: str, kurallar: list[Kural],
            istisnalar: list | None = None, site=None) -> tuple[str, list[tuple[Kural, int]]]:
     """Kuralları uygular. (yeni_metin, [(kural, değişiklik_sayısı), ...]) döner."""
@@ -145,9 +191,14 @@ def uygula(metin: str, kurallar: list[Kural],
     uygulanan = []
     for k in kurallar:
         sayac = 0
+        ad_kontrolu = k.tip in ('kelime', 'kok')
+        ad = ad_kontrolu and sayfada_ad_olarak_geciyor(metin, k)
 
         def say(m, k=k):
             nonlocal sayac
+            if ad_kontrolu and _buyuk_harfli(m) and (
+                    ad or not cumle_basi_mi(m.string, m.start())):
+                return m.group(0)
             sayac += 1
             return k._yerine(m)
 
