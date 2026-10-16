@@ -12,6 +12,13 @@ Kadir ile anlaşılan iş akışı. Ben (Claude) aday bulur, metni hazırlar, sa
 - Sayı verilirse (ör. `3 madde`) o kadar öneri hazırla; verilmezse 1.
 - Uzunluk: aksi söylenmedikçe **kısa ekleme (1–3 cümle)**. Kadir "daha uzun" diyene kadar kısa kal.
 
+## İş kaydı ve çeşitlilik (her çalışmada, aday aramadan önce)
+Aynı maddeler etrafında dönmemek için iş kaydı tutulur: `/Users/kadir.balikci/PycharmProjects/vikibot/claude_kaydi.tsv` (TAB ayrılmış: tarih, beceri, madde, sonuç, not).
+- **Önce kaydı oku.** Kayıtta herhangi bir beceriyle geçen bir maddeyi yeniden aday yapma; başka bir beceri için bile. İstisna: Kadir maddeyi adıyla verirse ya da "devam et" derse.
+- **Çeşitlilik:** Taslak kategorisini hep aynı noktadan okuma; `gcmstart` için rastgele bir tarih seç ya da farklı konu taslak kategorilerinden (ör. `Kategori:Film taslakları`) birini rastgele al. Aynı konu alanından arka arkaya öneri yapma.
+- **Sonra kaydı yaz.** Raporu verdikten sonra incelenen her madde için bir satır ekle: `tarih<TAB>genislet<TAB>madde<TAB>sonuç<TAB>kısa not`. Sonuç: `öneri`, `sorun yok`, `uygulandı` (Kadir kaydettiyse) veya `kaynak yok`. Son 7 gün kuralı vb. ile elenen maddeler yazılmaz.
+- Kadir önceki bir öneriyi kaydettiyse (sayfa geçmişinde KadirBalikci düzenlemesi), ilgili satırın sonucunu `uygulandı` yap.
+
 ## 1. Aday bulma
 Tarayıcı panelini (Claude_Browser) tr.wikipedia.org'da aç ve sayfa içinde `fetch` ile API'yi kullan (bulut ortamı Vikipedi'ye erişemiyor):
 - `Kategori:Tüm taslak maddeler` (ns 0) üyelerini `generator=categorymembers` ile çek, `prop=info|langlinks&lllang=en` (gerekirse `de`).

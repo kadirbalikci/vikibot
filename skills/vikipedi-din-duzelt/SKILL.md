@@ -19,6 +19,13 @@ Kadir ile anlaşılan iş akışı. Ben (Claude) aday bulur, sorunları tespit e
 - Konu/madde verilirse (ör. `din maddesi düzelt: Miraç`) doğrudan o madde(ler) incelenir; verilmezse kategorilerden aday seçilir.
 - Sayı verilirse o kadar madde incelenir; verilmezse 3 madde incelenip sorun bulunanlar raporlanır.
 
+## İş kaydı ve çeşitlilik (her çalışmada, aday aramadan önce)
+Aynı maddeler etrafında dönmemek için iş kaydı tutulur: `/Users/kadir.balikci/PycharmProjects/vikibot/claude_kaydi.tsv` (TAB ayrılmış: tarih, beceri, madde, sonuç, not).
+- **Önce kaydı oku.** Kayıtta herhangi bir beceriyle geçen bir maddeyi yeniden aday yapma; başka bir beceri için bile. İstisna: Kadir maddeyi adıyla verirse ya da "devam et" derse.
+- **Çeşitlilik:** Her seferinde aynı kategorinin ilk üyelerinden başlama; listedeki kategorilerden rastgele birini ve o kategoride rastgele bir noktayı seç (`cmstartsortkeyprefix` ile rastgele bir harf). Aynı türden (ör. üç sahabe) arka arkaya inceleme yapma; peygamber, sahabe, tarih ve kavram maddelerini karıştır.
+- **Sonra kaydı yaz.** Raporu verdikten sonra incelenen her madde için bir satır ekle: `tarih<TAB>din-duzelt<TAB>madde<TAB>sonuç<TAB>kısa not`. Sonuç: `öneri`, `sorun yok`, `uygulandı` (Kadir kaydettiyse) veya `kaynak yok`. Son 7 gün kuralı vb. ile elenen maddeler yazılmaz.
+- Kadir önceki bir öneriyi kaydettiyse (sayfa geçmişinde KadirBalikci düzenlemesi), ilgili satırın sonucunu `uygulandı` yap.
+
 ## 1. Aday bulma
 Vikipedi API'sine `curl` ile erişilir (Python urllib bu makinede SSL hatası veriyor; Türkçe karakterli parametreler için `curl -G --data-urlencode` kullan, User-Agent ver):
 - Kategoriler: `Kategori:İslam`, `Kategori:İslam tarihi`, `Kategori:Sahabeler`, `Kategori:Peygamberler`, `Kategori:Fıkıh`, `Kategori:İslami terimler`, `Kategori:Hadis`, `Kategori:Kur'an` ve alt kategorileri.

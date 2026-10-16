@@ -12,6 +12,13 @@ Genişletmeden farkı: yeni bilgi eklemek değil, maddede **eskimiş/yanlış ha
 - Konu verilirse (ör. `madde güncelle: futbol`) adayları o alandan seç.
 - Sayı verilirse o kadar öneri; verilmezse 1. Başlangıçta her öneri **tek bir bilgi** (bir sayı, bir isim, bir cümle) olsun.
 
+## İş kaydı ve çeşitlilik (her çalışmada, aday aramadan önce)
+Aynı maddeler etrafında dönmemek için iş kaydı tutulur: `/Users/kadir.balikci/PycharmProjects/vikibot/claude_kaydi.tsv` (TAB ayrılmış: tarih, beceri, madde, sonuç, not).
+- **Önce kaydı oku.** Kayıtta herhangi bir beceriyle geçen bir maddeyi yeniden aday yapma; başka bir beceri için bile. İstisna: Kadir maddeyi adıyla verirse ya da "devam et" derse.
+- **Çeşitlilik:** Etiket kategorilerini her seferinde en yeni üyelerden okuma; ay alt kategorilerinden (`Kategori:Güncellenmesi gereken maddeler <Ay Yıl>`) rastgele birini seç, adayları karıştır. Aynı alandan (ör. iki raylı sistem maddesi) arka arkaya öneri yapma.
+- **Sonra kaydı yaz.** Raporu verdikten sonra incelenen her madde için bir satır ekle: `tarih<TAB>guncelle<TAB>madde<TAB>sonuç<TAB>kısa not`. Sonuç: `öneri`, `sorun yok`, `uygulandı` (Kadir kaydettiyse) veya `kaynak yok`. Son 7 gün kuralı vb. ile elenen maddeler yazılmaz.
+- Kadir önceki bir öneriyi kaydettiyse (sayfa geçmişinde KadirBalikci düzenlemesi), ilgili satırın sonucunu `uygulandı` yap.
+
 ## 1. Aday bulma
 Tarayıcı panelini (Claude_Browser) tr.wikipedia.org'da aç, sayfa içinde `fetch` ile API'yi kullan (bulut ortamı Vikipedi'ye erişemiyor). Kaynaklar, öncelik sırasıyla:
 1. `{{Güncelle}}` etiketli maddeler: `Kategori:Güncellenmesi gereken tüm maddeler` / `Kategori:Güncellenmesi gereken maddeler`. Tartışma sayfasında ve sayfa geçmişinde neyin güncellenmesi istendiğine bak.
